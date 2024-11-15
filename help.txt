@@ -1,0 +1,51 @@
+**************** SISTEMA VIA MAIL PIZZERÍA ALEJANDRINI **************** 
+
+Utiliza 'help' para visualizar la lista de comandos 
+A continuación la lista de los casos de uso y los comandos disponibles:
+
+CU: pizzas
+  - save (name, price, image/url.jpg, descripcion sin comas ni acentos, idSize, idCategory)
+  - update (id, name, price, image/url.jpg, descripcion sin comas ni acentos, boolean true o false, idSize, idCategory)
+  - findOne (idToFind)
+  - findAll (all) -- escribir tal cual
+  - delete (idToDelete)
+
+CU: sizes
+  - save (size)
+  - update (id, sizeUpdate)
+  - findOne (idToFind)
+  - findAll (all) -- escribir tal cual
+  - delete (idToDelete)
+
+CU: paymentMethods
+  - save (name)
+  - update (id, newName)
+  - findOne (id)
+  - findAll (all) -- escribir tal cual
+  - delete (id)
+
+CU: orders
+  - save (id_user, id_pizza, pizzasQuantity, id_payment_method)
+  - update (idOrder,newStateId) 
+  - findAll (all) -- escribir tal cual
+
+CU: categories
+  - save (categorie)
+  - update (id, categoryUpdate)
+  - findOne (idToFind)
+  - findAll (all) -- escribir tal cual
+  - delete (idToDelete)
+
+CU: usuarios
+  - save (name, email, password, phone, direccion sin comas ni acentos, role)
+  - update (id, name, email, password, phone, direccion sin comas ni acentos, role)
+  - findOne (userId)
+  - findAll (all) -- escribir tal cual
+  - delete (userId)
+
+CU: states
+  - save (estado)
+  - update (id, stateUpdate)
+  - findOne (id)
+  - findAll (all) -- escribir tal cual
+  - delete (id)
