@@ -26,95 +26,107 @@ public class DUsuario {
             connection.closeConnection();
     }
 
-    // id, name, email, password, phone, address
+    // Método para guardar un nuevo usuario
     public String save(
-            String name,
+            String nombre,
+            String apellido,
+            String ci,
+            String direccionDomicilio,
             String email,
+            String fechaNacimiento,
             String password,
-            int phone,
-            String address,
-            String role) throws SQLException {
+            int rolId,
+            Integer garanteId) throws SQLException {
 
-        String query = "INSERT INTO users(name,email,password,phone,address,role) "
-                + "values(?,?,?,?,?,?)";
+        String query = "INSERT INTO Usuario(Nombre, Apellido, CI, Direccion_Domicilio, email, Fecha_Nacimiento, password, rol_id, garante_id) "
+                + "values(?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement ps = connection.connection().prepareStatement(query);
 
-        ps.setString(1, name);
-        ps.setString(2, email);
-        ps.setString(3, password);
-        ps.setInt(4, phone);
-        ps.setString(5, address);
-        ps.setString(6, role);
+        ps.setString(1, nombre);
+        ps.setString(2, apellido);
+        ps.setString(3, ci);
+        ps.setString(4, direccionDomicilio);
+        ps.setString(5, email);
+        ps.setString(6, fechaNacimiento);
+        ps.setString(7, password);
+        ps.setInt(8, rolId);
+        ps.setObject(9, garanteId, java.sql.Types.INTEGER); // Puede ser null si no hay garante
 
         if (ps.executeUpdate() == 0) {
             System.err.println("class DUsuario.java dice:" + "El usuario no se pudo insertar");
             throw new SQLException();
         }
 
-        return "El usuario se inserto con exito";
+        return "El usuario se insertó con éxito";
     }
 
-    public String update(int id, String name, String email, String password,
-            int phone, String address, String role) throws SQLException {
+    // Método para actualizar un usuario
+    public String update(int id, String nombre, String apellido, String ci, String direccionDomicilio,
+                         String email, String fechaNacimiento, String password, int rolId, Integer garanteId) throws SQLException {
 
-        String query = "UPDATE users SET name=?, email=?,password=?, phone=?, address=?, role=?, WHERE id=?";
+        String query = "UPDATE Usuario SET Nombre=?, Apellido=?, CI=?, Direccion_Domicilio=?, email=?, Fecha_Nacimiento=?, password=?, rol_id=?, garante_id=? WHERE id=?";
 
         PreparedStatement ps = connection.connection().prepareStatement(query);
 
-        ps.setString(1, name);
-        ps.setString(2, email);
-        ps.setString(3, password);
-        ps.setInt(4, phone);
-        ps.setString(5, address);
-        ps.setString(6, role);
-        ps.setInt(7, id);
-        
+        ps.setString(1, nombre);
+        ps.setString(2, apellido);
+        ps.setString(3, ci);
+        ps.setString(4, direccionDomicilio);
+        ps.setString(5, email);
+        ps.setString(6, fechaNacimiento);
+        ps.setString(7, password);
+        ps.setInt(8, rolId);
+        ps.setObject(9, garanteId, java.sql.Types.INTEGER); // Puede ser null si no hay garante
+        ps.setInt(10, id);
 
         if (ps.executeUpdate() == 0) {
             System.err.println("class DUsuario.java dice:" + "El usuario no se pudo actualizar");
             return "El usuario no se pudo actualizar";
-            // throw new SQLException();
         }
-        return "El usuario se actualizo con exito";
+        return "El usuario se actualizó con éxito";
     }
 
+    // Método para eliminar un usuario
     public String delete(int id) throws SQLException {
-        String query = "DELETE FROM users WHERE id=?";
+        String query = "DELETE FROM Usuario WHERE id=?";
         PreparedStatement ps = connection.connection().prepareStatement(query);
         ps.setInt(1, id);
         if (ps.executeUpdate() == 0) {
             System.err.println("Class DUsuario.java dice: "
                     + "El usuario no se pudo eliminar, delete()");
             return "El usuario no se pudo eliminar";
-            // throw new SQLException();
         }
-        return "El usuario se elimino con exito";
+        return "El usuario se eliminó con éxito";
     }
 
+    // Método para obtener todos los usuarios
     public List<String[]> findAll() throws SQLException {
         List<String[]> usuarios = new ArrayList<>();
-        String query = "SELECT * FROM users";
+        String query = "SELECT * FROM Usuario";
         PreparedStatement ps = connection.connection().prepareStatement(query);
         ResultSet set = ps.executeQuery();
         while (set.next()) {
             usuarios.add(new String[] {
                     String.valueOf(set.getInt("id")),
-                    set.getString("name"),
+                    set.getString("Nombre"),
+                    set.getString("Apellido"),
+                    set.getString("CI"),
+                    set.getString("Direccion_Domicilio"),
                     set.getString("email"),
+                    set.getString("Fecha_Nacimiento"),
                     set.getString("password"),
-                    String.valueOf(set.getInt("phone")),
-                    set.getString("address"),
-                    set.getString("role")
-
+                    String.valueOf(set.getInt("rol_id")),
+                    String.valueOf(set.getInt("garante_id"))
             });
         }
         return usuarios;
     }
 
+    // Método para encontrar un usuario por id
     public String[] findOne(int id) throws SQLException {
         String[] usuario = null;
-        String query = "SELECT  * FROM users WHERE id=?";
+        String query = "SELECT * FROM Usuario WHERE id=?";
         PreparedStatement ps = connection.connection().prepareStatement(query);
         ps.setInt(1, id);
 
@@ -122,16 +134,17 @@ public class DUsuario {
         if (set.next()) {
             usuario = new String[] {
                     String.valueOf(set.getInt("id")),
-                    set.getString("name"),
+                    set.getString("Nombre"),
+                    set.getString("Apellido"),
+                    set.getString("CI"),
+                    set.getString("Direccion_Domicilio"),
                     set.getString("email"),
+                    set.getString("Fecha_Nacimiento"),
                     set.getString("password"),
-                    String.valueOf(set.getInt("phone")),
-                    set.getString("address"),
-                    set.getString("role")
-
+                    String.valueOf(set.getInt("rol_id")),
+                    String.valueOf(set.getInt("garante_id"))
             };
         }
         return usuario;
     }
-
 }
